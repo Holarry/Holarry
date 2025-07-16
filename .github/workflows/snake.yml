@@ -4,7 +4,14 @@ name: Generate Snake
 on:
   schedule:
     - cron: "0 0 * * *" 
+    
+  # allows to manually run the job at any time  
   workflow_dispatch:
+
+  # run on every push on the main branch
+  push:
+    branches:
+      - main
 
 jobs:
   generate:
@@ -13,7 +20,7 @@ jobs:
     
     steps:
       - name: generate github-contribution-grid-snake.svg
-        uses: aelassas/snk/svg-only@main
+        uses: Platane/snk/svg-only@v3
         with:
           github_user_name: ${{ github.repository_owner }}
           outputs: |
@@ -21,7 +28,7 @@ jobs:
             dist/assets/profile-snake-contrib/github-contribution-grid-snake-dark.svg?palette=github-dark
             
       - name: push github-contribution-grid-snake.svg
-        uses: crazy-max/ghaction-github-pages@v3.1.0
+        uses: crazy-max/ghaction-github-pages@v4
         with:
           target_branch: main
           build_dir: dist
